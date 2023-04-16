@@ -47,7 +47,10 @@ class Ohmyi3(ServiceProvider, Cli):
             help='Ohmyi3 i3ctl Commands and Setuptools Entrypoint',
             commands={
                 'generate': 'ohmyi3.commands.generate.cli',
+                'gen': 'ohmyi3.commands.generate.cli',
+                'g': 'ohmyi3.commands.generate.cli',
                 'init': 'ohmyi3.commands.init.cli',
                 'info': 'ohmyi3.commands.info.cli',
+                'i': 'ohmyi3.commands.info.cli',
             },
         )

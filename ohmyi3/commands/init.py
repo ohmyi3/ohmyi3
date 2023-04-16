@@ -1,7 +1,7 @@
 import os
 import shutil
 import uvicore
-from ohmyi3.app import App
+from ohmyi3.app import Application
 from uvicore.support.dumper import dump, dd
 from uvicore.exceptions import SmartException
 from uvicore.console import command, argument, option
@@ -11,7 +11,7 @@ async def cli():
     """Initialize a stock ~/.config/ohmyi3/* configuration"""
 
     # Get the application instance
-    app = App(must_exist=False);
+    app = Application(must_exist=False);
 
     uvicore.log.header('Initializing ohmyi3')
 
