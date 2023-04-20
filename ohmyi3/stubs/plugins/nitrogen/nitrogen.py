@@ -4,30 +4,26 @@ from ohmyi3.util import path, exists, shell
 
 class Nitrogen:
     """
-    Nitrogen Wallpaper Plugin
+    Ohmyi3 Nitrogen Wallpaper Plugin
     Copyright (c) 2023 Matthew Reschke License http://mreschke.com/license/mit
     """
 
-    def __init__(self, configurator, test):
-        # User Configurator Instance
-        self.configurator = configurator
-
+    def __init__(self, config):
+        """Instantiate Plugin with User Configuration"""
+        self.config = config
 
     def set_wallpaper(self):
         """Set nitrogen wallpaper based on selected theme"""
-
-        # Shortcuts
-        configurator = self.configurator
-        app = configurator.app
-        theme = configurator.theme
-        themes = configurator.themes
-        wallpaper_base = configurator.wallpaper_base
+        theme = self.config.theme
+        themes = self.config.themes
+        themes_path = self.config.paths.ohmyi3_themes
+        wallpaper_base = self.config.wallpaper_base
 
         # Get theme background file (jpg or png)
         background = None
-        theme_folder = path([app.themes_folder, theme])
-        jpg = path([theme_folder, 'background.jpg'])
-        png = path([theme_folder, 'background.jpg'])
+        theme_path = path([self.config.paths.ohmyi3_themes, self.config.theme])
+        jpg = path([theme_path, 'background.jpg'])
+        png = path([theme_path, 'background.jpg'])
         if exists(jpg): background = jpg
         if exists(png): background = png
 

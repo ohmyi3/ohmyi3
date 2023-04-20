@@ -4,20 +4,20 @@ from uvicore.support.dumper import dump, dd
 
 class Archey3:
     """
-    Archey3 Plugin
+    Ohmyi3 Archey3 Plugin
     Copyright (c) 2023 Matthew Reschke License http://mreschke.com/license/mit
     """
 
-    def __init__(self, configurator):
-        # User Configurator Instance
-        self.configurator = configurator
-
+    def __init__(self, config):
+        """Instantiate Plugin with User Configuration"""
+        self.config = config
 
     def set_archey(self):
         """Set ~/.zshrc archey3 color based on theme"""
-        themes = self.configurator.themes
-        theme = self.configurator.theme
+        themes = self.config.themes
+        theme = self.config.theme
         color = themes.dotget(f"{theme}.archey3")
+
         if not color: return
         if util.exists('~/.zshrc'):
             cmd = f"sed -i 's/archey3.*/archey3 -c {color}/g' ~/.zshrc"
@@ -27,4 +27,3 @@ class Archey3:
             cmd = f"sed -i 's/archey3.*/archey3 -c {color}/g' ~/.bashrc"
             uvicore.log.item4(f"Plugin Archey3: {cmd}")
             util.shell(cmd)
-

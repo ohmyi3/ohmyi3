@@ -9,10 +9,7 @@ config = {
     # --------------------------------------------------------------------------
     # Package Custom Configuration
     # --------------------------------------------------------------------------
-    'config_path': env('OHMYI3_CONFIG_PATH', '~/.config/ohmyi3'),
-    'i3config_path': env('OHMYI3_I3CONFIG_PATH', '~/.config/i3'),
-    'i3status_path': env('OHMYI3_I3STATUS_PATH', '~/.config/i3status'),
-
+    'config_path': env('OHMYI3_PATH', '~/.config/ohmyi3'),
 
 
     # --------------------------------------------------------------------------
