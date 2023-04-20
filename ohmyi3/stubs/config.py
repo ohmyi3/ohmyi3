@@ -5,11 +5,14 @@ from uvicore.configuration import env
 from uvicore.support.dumper import dump, dd
 from ohmyi3.util import Overridable, gather, path, plugin
 
-# Settings and hooks for ohmyi3 i3ctl config generator.
-# Configs as python gives unlimited flexibility and programability.
-# All of these self.* variables are accessible as jinja2 variables
-# to dynamically control your i3 configs and anything else that
-# requires automation (see the plugins)
+# Ohmyi3 user configuration.
+#
+# This config is what drives the i3ctl generator.
+# All variables inside config() will be available to the jinja2 templating engine
+# and may be used in your config.d/* i3 configs for dynamic conditions.
+# Use the before_generate() and after_generate() hooks to fire off plugins/*
+# to control the rest of your system (set wallpaper, alacritty themes, polybar...)
+# From here on out, the power is in your hands.  Automation is now limitless!
 
 def config():
     """Ohmyi3 variables for configuring and templating i3"""

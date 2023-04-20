@@ -26,7 +26,7 @@ pip install ohmyi3
 ```
 
 2. Initialize a fresh ohmyi3 config.  This creates a `~/.config/ohmyi3` and
-populates it with a good set of default you can work with.
+populates it with a good set of defaults you can work with.
 ```
 i3ctl init
 ```
