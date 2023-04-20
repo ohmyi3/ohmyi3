@@ -56,6 +56,37 @@ i3ctl info
 you can now run the generator to template `~/.config/ohmyi3/config.d/*` i3 configs
 which will output a new i3 file to `~/.config/i3/config` (it WILL save a backup
 to that same folder before it overrides a new file)
+```
+i3ctl generate
+
+## Example CLI Output
+
+:: Generating new i3 config using ohmyi3 ::
+   + Firing user defined before_generate hook
+   * Backing up /home/mreschke/.config/i3/config to /home/mreschke/.config/i3/backup-2023-04-20_17-36-41
+   - Appending /home/mreschke/.files/configs/i3/config.d/00-header.conf
+   - Appending /home/mreschke/.files/configs/i3/config.d/05-system.conf
+   - Appending /home/mreschke/.files/configs/i3/config.d/10-autostart.conf
+   - Appending /home/mreschke/.files/configs/i3/config.d/15-borders.conf
+   - Appending /home/mreschke/.files/configs/i3/config.d/20-navigation.conf
+   - Appending /home/mreschke/.files/configs/i3/config.d/80-applications.conf
+   - Appending /home/mreschke/.files/configs/i3/config.d/85-windows.conf
+   - Appending /home/mreschke/.files/configs/i3/config.d/90-gaps.conf
+   * Appending THEME pink
+   * Copying /home/mreschke/.files/configs/i3/themes/i3status.conf to /home/mreschke/.config/i3status/config
+   + Firing user defined after_generate hook
+   > Plugin Nitrogen: nitrogen --save --set-zoom-fill /home/mreschke/Wallpaper/De/budgie.jpg > /dev/null 2>&1
+   > Plugin Archey3: sed -i 's/archey3.*/archey3 -c magenta/g' ~/.zshrc
+   > Plugin Archey3: sed -i 's/archey3.*/archey3 -c magenta/g' ~/.bashrc
+   > Plugin Polybar: Templating /home/mreschke/.files/configs/polybar/qpanels/panel/deepin.j2.ini
+   > Plugin Alacritty: Templating /home/mreschke/.files/configs/alacritty/alacritty.j2.yml
+
+Done!
+New /home/mreschke/.config/i3/config generated!
+Please reload i3!
+
+```
+
 
 7. Reload i3
 
