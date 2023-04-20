@@ -423,15 +423,17 @@ async def after_generate(config):
 ```
 
 
-## Exmaple Info Output
+## Example Info Output
 
 All variables defined in your `~/.config/ohmyi3/config.py` will be available as
 nice `SuperDict` to the jinja2 templating engine.
+
+
+Example output from the example `config.py` above on my host named `p15`
 ```
 i3ctl info
 ```
 
-Example output from the example `config.py` above on my host named `p15`
 ```python
 :: Ohmyi3 User Configuration ::
 Dict({
