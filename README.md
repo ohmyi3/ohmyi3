@@ -16,6 +16,7 @@ and any other dynamic variable.
 - Plugins and hooks allow you to control all aspects of your system from a single config
     - Not only can you template dynamic i3 configs, but you can also:
     - Template alacritty, polybar, nitrogen, feh and anything else...its all python and jinja2, limitless
+- Powered by https://github.com/uvicore/framework
 
 
 ## Installation
