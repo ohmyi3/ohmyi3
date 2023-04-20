@@ -58,9 +58,10 @@ which will output a new i3 file to `~/.config/i3/config` (it WILL save a backup
 to that same folder before it overrides a new file)
 ```
 i3ctl generate
+```
 
-## Example CLI Output
-
+Example CLI Output
+```
 :: Generating new i3 config using ohmyi3 ::
    + Firing user defined before_generate hook
    * Backing up /home/mreschke/.config/i3/config to /home/mreschke/.config/i3/backup-2023-04-20_17-36-41
@@ -84,7 +85,6 @@ i3ctl generate
 Done!
 New /home/mreschke/.config/i3/config generated!
 Please reload i3!
-
 ```
 
 
@@ -420,4 +420,112 @@ async def after_generate(config):
 
     # Template the alacritty config
     #config.plugins.alacritty.template_config()
+```
+
+
+## Exmaple Info Output
+
+All variables defined in your `~/.config/ohmyi3/config.py` will be available as
+nice `SuperDict` to the jinja2 templating engine.
+```
+i3ctl info
+```
+
+Example output from the example `config.py` above on my host named `p15`
+```python
+:: Ohmyi3 User Configuration ::
+Dict({
+    'host': 'p15',
+    'user': 'mreschke',
+    'ohmyi3_path': '~/.config/ohmyi3',
+    'paths': Dict({
+        'ohmyi3': '/home/mreschke/.files/configs/i3',
+        'ohmyi3_configd': '/home/mreschke/.files/configs/i3/config.d',
+        'ohmyi3_themes': '/home/mreschke/.files/configs/i3/themes',
+        'i3': '/home/mreschke/.config/i3',
+        'i3status': '/home/mreschke/.config/i3status',
+        'alacritty': '/home/mreschke/.files/configs/alacritty',
+        'polybar': '/home/mreschke/.files/configs/polybar'
+    }),
+    'os': 'manjaro',
+    'net_interface': 'enp11s0',
+    'has_battery': True,
+    'battery_device': 'BAT0',
+    'backlight_device': 'intel_backlight',
+    'desktop': 'i3',
+    'desktop_tools': 'kde',
+    'i3_gaps': True,
+    'i3_restart': '~/.files/scripts/i3ctl-dev generate && i3-msg restart',
+    'wallpaper_base': '~/Wallpaper',
+    'theme': 'pink',
+    'themes': Dict({
+        'amber': Dict({'wallpaper': 'LinuxMint/linuxmint-una/nwatson_eclipse.jpg', 'archey3': 'yellow'}),
+        'archlinux': Dict({'archey3': 'blue', 'wallpaper': 'De/budgie.jpg'}),
+        'manjaro': Dict({'wallpaper': 'De/deepin.jpg', 'archey3': 'green'}),
+        'pink': Dict({'wallpaper': 'De/budgie.jpg', 'archey3': 'magenta'})
+    }),
+    'polybar': Dict({
+        'enabled': True,
+        'theme': 'qpanels',
+        'subtheme': 'deepin'
+    }),
+    'rofi': Dict({
+        'launcher': '~/.config/polybar/qpanels/scripts/launcher.sh --deepin',
+        'powermenu': '~/.config/polybar/qpanels/scripts/powermenu.sh --deepin'
+    }),
+    'alacritty': Dict({'font_size': '8.0'}),
+    'font': 'xft:URWGothic-Book 9',
+    'bar': Dict({
+        'enabled': False,
+        'cmd': 'i3bar --transparency',
+        'status_cmd': 'i3status',
+        'position': 'bottom',
+        'font': 'xft:URWGothic-Book 8',
+        'mode': 'dock',
+        'hidden_state': 'hide',
+        'modifier': 'none'
+    }),
+    'apps': Dict({
+        'terminal': 'alacritty',
+        'filemanager': 'dolphin',
+        'webbrowser': 'firefox',
+        'webbrowser2': 'chromium',
+        'calculator': 'kcalc',
+        'settings': 'systemsettings',
+        'screenshot': 'spectacle',
+        'dmenu': '/home/mreschke/.files/scripts/dmenu-run-blue',
+        'screenlock': 'blurlock',
+        'powermanager': 'xfce4-power-manager',
+        'powermanagersettings': 'xfce4-power-manager-settings',
+        'xsslock': 'xss-lock -- blurlock',
+        'networkeditor': 'nm-connection-editor',
+        'htop': 'htop',
+        'bashtop': 'bashtop',
+        'taskmanager': 'ksysguard',
+        'codeeditor': 'code',
+        'notepad': 'kate',
+        'colorpicker': 'kcolorchooser',
+        'spotify': 'spotify',
+        'clipboard': 'clipit --daemon'
+    }),
+    'tray': Dict({'volume': 'volumeicon', 'network': 'nm-applet'}),
+    'volume': Dict({
+        'up': 'amixer -D pulse sset Master 5%+',
+        'down': 'amixer -D pulse sset Master 5%-',
+        'mute': 'amixer -D pulse set Master 1+ toggle',
+        'mixer': 'pavucontrol'
+    }),
+    'media': Dict({
+        'play_pause': 'playerctl play-pause',
+        'next': 'playerctl next',
+        'previous': 'playerctl previous'
+    }),
+    'brightness': Dict({'up': 'brightnessctl -q set 3%+', 'down': 'brightnessctl --min-val=2 -q set 3%-'}),
+    'plugins': Dict({
+        'nitrogen': <plugins.nitrogen.nitrogen.Nitrogen object at 0x7fabd2bb7880>,
+        'archey3': <plugins.archey3.archey3.Archey3 object at 0x7fabd2bb78b0>,
+        'polybar': <plugins.polybar.polybar.Polybar object at 0x7fabd2bb7850>,
+        'alacritty': <plugins.alacritty.alacritty.Alacritty object at 0x7fabd2bb7940>
+    })
+})
 ```
