@@ -88,8 +88,43 @@ New /home/mreschke/.config/i3/config generated!
 Please reload i3!
 ```
 
-
 7. Reload i3
+
+
+
+## Most Basic Example
+
+If your `~/.config/ohmyi3/config.py` looked like this
+```python
+...
+def config():
+    host = util.hostname()
+    theme = 'archlinux'
+...
+```
+
+And you had only a single file `~/config/ohmyi3/config.d/01-test.conf`
+```jinja
+# My dynamic i3 config
+
+Your hostname is {{ host }}
+
+{% if host == 'sunjaro' %}
+Add i3 configs specifically for {{ host }}
+{% endif %}
+
+I love the {{ theme }} theme
+```
+
+After running `i3ctl generate`, your final `~/.config/i3/config` would look like this
+```
+# My dynamic i3 config
+
+Your hostname is sunjaro
+Add i3 configs specifically for sunjaro
+I love the archlinux theme
+```
+
 
 
 ## Sample the Power
