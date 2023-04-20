@@ -427,7 +427,8 @@ async def after_generate(config):
 ## Example Info Output
 
 All variables defined in your `~/.config/ohmyi3/config.py` will be available as
-nice `SuperDict` to the jinja2 templating engine.
+nice `SuperDict` to the jinja2 templating engine and used to dynamically control
+i3 (and anything else).
 
 
 Example output from the example `config.py` above on my host named `p15`
