@@ -292,22 +292,31 @@ def config():
 
 
 
+
+
 async def before_generate(config):
     """This hook fires before the new i3 config is generated"""
     #dump('before hook')
+
 
 async def after_generate(config):
     """This hook fires after the new i3 config is generated"""
     #dump('after hook')
 
+    # REVIEW all these plugins.  They are very specific
+    # For example, the polybar theme is specific to
+    # https://github.com/adi1090x/polybar-themes style themes only and
+    # is currently designed mostly for the "panels" variant.
+
     # Set themed wallpaper
-    config.plugins.nitrogen.set_wallpaper()
+    #config.plugins.nitrogen.set_wallpaper()
 
     # Set themed archey in my .zshrc and or .bashrc
-    config.plugins.archey3.set_archey()
+    #config.plugins.archey3.set_archey()
 
     # Modify polybar theme files (template some variables)
-    config.plugins.polybar.adjust_polybar()
+    # For https://github.com/adi1090x/polybar-themes system only
+    #config.plugins.polybar.adjust_polybar()
 
     # Template the alacritty config
-    config.plugins.alacritty.template_config()
+    #config.plugins.alacritty.template_config()
