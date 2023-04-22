@@ -136,7 +136,7 @@ from ohmyi3 import util
 from uvicore.typing import Dict
 from uvicore.configuration import env
 from uvicore.support.dumper import dump, dd
-from ohmyi3.util import Overridable, gather, path, plugin
+from ohmyi3.util import set, gather, path, plugin
 
 # Ohmyi3 user configuration.
 #
@@ -154,8 +154,6 @@ def config():
     host = util.hostname()
     user = util.loggedinuser()
 
-    # Refresh overridables with all local variables thus far
-    set = Overridable(**locals())
 
     # Paths to all relevant locations
     # If you need to change the ohmyi3 path, use the
@@ -171,20 +169,22 @@ def config():
         'polybar': path('~/.config/polybar'),
     })
 
-    # OS variant
-    os = set('manjaro', if_host={
-        'p14s': 'lmde'
+    # Unix OS Variant
+    os = set('manjaro', host, {
+        'p14s': 'lmde',
     })
 
+
     # Main network interface
-    net_interface = set('enp11s0', if_host={
+    net_interface = set('enp11s0', host, {
         'p15': 'enp11s0',
         'p53': 'wlp0s20f3',
         'deajaro': 'wlp2s0',
     })
 
+
     # Has battery (laptop?)
-    has_battery = set(True, if_host={
+    has_battery = set(True, host, {
         'sunjaro': False,
         'p53': True,
         'p15': True,
@@ -192,93 +192,107 @@ def config():
     })
     battery_device = set('BAT0')
 
+
     # Backlinght
     backlight_device = set('intel_backlight')
+
 
     # Desktop Environment (kde, xfce, i3, cinnamon, mate, gnome)
     # I like to run i3 inside kde and xfce etc...  If runing under these DE's
     # I need to tweak the configs (no screen lock, different autostarts etc...)
-    desktop = set('i3', if_host={
+    desktop = set('i3', host, {
         'sunjaro': 'kde',
         'p53': 'i3',
         'p15': 'i3',
         #'p14s': 'cinnamon',
     })
 
+
     # Main desktop tools (kde, xfce...)
     # Not the same as desktop, which is the running Desktop Environment
-    desktop_tools = set('kde', if_host={
+    desktop_tools = set('kde', host, {
         'deajaro': 'xfce'
     })
 
+
     # Using i3 capable of gaps
-    i3_gaps = set(True, if_host={
+    i3_gaps = set(True, host, {
         'p14s': False
     })
 
+
     # Restart i3 command
-    i3_restart = set('~/.files/scripts/i3ctl-dev generate && i3-msg restart', if_host={
+    i3_restart = set('~/.files/scripts/i3ctl-dev generate && i3-msg restart', host, {
         'deajaro': 'i3ctl generate && i3-msg restart',
+        'p14s': '/home/mreschke/.pyenv/shims/i3ctl generate && i3-msg restart',
     })
 
+
     # Wallpaper base
-    wallpaper_base = set('~/Wallpaper', if_host={
+    wallpaper_base = set('~/Wallpaper', host, {
         'sunjaro': '~/Pictures/Wallpaper',
         'p53': '~/Pictures/Wallpaper',
     })
 
+
     # Current theme (amber, archlinux, manjaro, pink)
-    theme = set('manjaro', if_host={
+    theme = set('manjaro', host, {
         'sunjaro': 'manjaro',
         'p53': 'manjaro',
-        'p15': 'pink',
+        'p15': 'amber',
         'p14s': 'manjaro',
     })
 
-    # Refresh overridables with all local variables thus far
-    set = Overridable(**locals())
 
     # Extra theme details
     # Wallpaper is an OVERRIDE, else defaults to the themes folder/background.[jpg|png]
     themes = set({
         'amber': {
+            'color': '#EF5B1A',
+            'archey3': 'yellow',
             #'wallpaper': 'Abstract/cracked_orange.jpg',
             #'wallpaper': 'Manjaro/antelope-canyon-984055.jpg',
             #'wallpaper': 'Scenes/digital_sunset.jpg',
             #'wallpaper': 'LinuxMint/linuxmint-vera/mpiwnicki_red_dusk.jpg',
             #'wallpaper': 'LinuxMint/linuxmint-vanessa/navi_india.jpg',
-            'wallpaper': 'LinuxMint/linuxmint-una/nwatson_eclipse.jpg',
+            #'wallpaper': 'LinuxMint/linuxmint-una/nwatson_eclipse.jpg',
             #'wallpaper': 'LinuxMint/linuxmint-vera/navi_india.jpg',
             #'wallpaper': 'LinuxMint/linuxmint-ulyssa/tangerine_nanpu.jpg',
             #'wallpaper': 'Manjaro/sky-3189347.jpg',
-            'archey3': 'yellow',
         },
         'archlinux': {
-            #'wallpaper': 'Archlinux/349880.jpg',
+            'color': '#1793D1',
             'archey3': 'blue',
+            #'wallpaper': 'Archlinux/349880.jpg',
             'wallpaper': 'De/budgie.jpg',
+
         },
         'manjaro': {
+            'color': '#106E5C',
+            'archey3': 'green',
             #'wallpaper': 'Manjaro/illyria-default-lockscreen-nobrand.jpg',
             #'wallpaper': 'Manjaro/wpM_orbit2_textured.jpg'
             'wallpaper': 'De/deepin.jpg',
-            'archey3': 'green',
+
         },
         'pink': {
+            'color': '#b41474',
+            'archey3': 'magenta',
             #'wallpaper': 'Abstract/artistic_colors2.jpg',
             #'wallpaper': 'Landscape/backlit-chiemsee-dawn-1363876.jpg',
             #`'wallpaper': 'Manjaro/DigitalMilkyway.png',
             #'wallpaper': 'LinuxMint/linuxmint-una/eeselioglu_istanbul.jpg',
             #'wallpaper': 'Abstract/neon_huawei.jpg',
-            'wallpaper': 'De/budgie.jpg',
-            'archey3': 'magenta',
+            #'wallpaper': 'De/budgie.jpg',
+            'wallpaper': 'De/deepin.jpg',
         },
     },
-        if_host={
+        host, {
             #'p15': {'manjaro.wallpaper': 'Manjaro/wpM_orbit2_textured.jpg'}
-            'p15': {'manjaro.wallpaper': 'De/deepin.jpg'}
+            #'p53': {'manjaro.wallpaper': 'De/deepin.jpg!!!'}
         }
     )
+
 
     # Polybar
     # Specific to the custom qpanel theme made from this https://github.com/adi1090x/polybar-themes
@@ -290,29 +304,38 @@ def config():
         # budgie|deepin|elight|edark|gnomw|klight|kdark
         # liri|mint|ugnome|unity|xubuntu|zorin
         'subtheme': 'deepin'
-    }, if_host={
-        'p14s': {'polybar.enabled': False},
+    }, host, {
+        'p14s': {'enabled': False},
     })
+
 
     # Rofi
     rofi = set({
         'launcher': f'~/.config/polybar/{polybar.theme}/scripts/launcher.sh --{polybar.subtheme}',
         'powermenu': f'~/.config/polybar/{polybar.theme}/scripts/powermenu.sh --{polybar.subtheme}',
-    },
-        if_host={
-            'p14s': {'launcher': 'rofi -show drun'}
-        }
-    )
+    }, host, {
+        'p14s': {'launcher': 'rofi -show drun'}
+    })
+
 
     # Alacritty
     alacritty = set({
-        'font_size': '10.0',
-    }, if_host={
+        'font_size': '9.0',
+    }, host, {
         'p15': {'font_size': '8.0'}
     })
 
+
     # Default font for window titles (not bar.font)
     font = set('xft:URWGothic-Book 9')
+
+
+    # Task tray
+    tasktray = set({
+        'enabled': True,
+        'position': 'right',
+    })
+
 
     # i3bar configs
     # All themes may obey these global bar configs, or they may set their own
@@ -332,72 +355,101 @@ def config():
         'modifier': 'none',
         #'modifier': 'Ctrl+$alt',
     },
-        # FIXME, make an ifnot_desktop == i3
-        if_desktop={
-            'kde': {'mode': 'hide'}
+        desktop != 'i3', {
+            'mode': 'hide'
         },
-        if_hostname={
+        host, {
             'p15': {'position': 'top'},
             'p14s': {'enabled': True},
         },
     )
 
+
+    # Applications (not autostarts)
     # Preferred applications, could change depending on DE installed
     apps = set({
+        # These are mostly common generic all Desktop Environments and Installed Desktop Tools
         'terminal': 'alacritty',
-        'filemanager': 'dolphin',
         'webbrowser': 'firefox',
         'webbrowser2': 'chromium',
-        'calculator': 'kcalc',
-        'settings': 'systemsettings',
-        'screenshot': 'spectacle', # i3-scrot
-        'dmenu': path('~/.files/scripts/dmenu-run-blue'),
-        'screenlock': 'blurlock',
-        'powermanager': 'xfce4-power-manager',
-        'powermanagersettings': 'xfce4-power-manager-settings',
-        'xsslock': f'xss-lock -- blurlock',
-        #'xsslock': f'xss-lock -- i3lock --nofork --image {wallpaper_base}/De/deepin.jpg',
-        'networkeditor': 'nm-connection-editor',
+        'dmenu': set(path('~/.files/scripts/dmenu-run-blue'),
+            theme, {'manjaro': path('~/.files/scripts/dmenu-run-green')
+        }),
         'htop': 'htop',
         'bashtop': 'bashtop',
-        'taskmanager': 'ksysguard',
         'codeeditor': 'code',
-        'notepad': 'kate',
-        'colorpicker': 'kcolorchooser',
+        'screenlock': 'blurlock',
+        'powermanager': 'xfce4-power-manager', # move to autostart
+        'powermanagersettings': 'xfce4-power-manager-settings',
         'spotify': 'spotify',
-        'clipboard': 'clipit --daemon',
+        'networkeditor': 'nm-connection-editor',
     },
-        if_theme={
-            'manjaro': {'dmenu': path('~/.files/scripts/dmenu-run-green')}
-        },
-        if_host={
-            'p14s': {
-                'terminal': 'gnome-terminal',
-                'calculator': 'gnome-calculator',
-                'screenlock': 'i3lock',
-            },
-            'deajaro': {
-                'filemanager': 'thunar',
-                'calculator': 'xcalc',
-                'taskmanager': 'xfce4-taskmanager',
-                'settings': 'xfce4-settings-manager',
-            },
+        desktop_tools=='kde', {
+            #'terminal': 'konsole',
+            'filemanager': 'dolphin',
+            'calculator': 'kcalc',
+            'settings': 'systemsettings',
+            'taskmanager': 'ksysguard',
+            'screenshot': 'spectacle',
+            'colorpicker': 'kcolorchooser',
+            'notepad': 'kate',
+    },
+        desktop_tools=='xfce', {
+            #'terminal': 'gnome-terminal',
+            'filemanager': 'thunar',
+            'calculator': 'galculator', # xcalc
+            'settings': 'xfce4-settings-manager',
+            'taskmanager': 'xfce4-taskmanager',
+            'notepad': 'mousepad',
+    },
+        desktop_tools=='gnome', {
+            'filemanager': 'nautilus', # ???
+            'terminal': 'gnome-terminal',
+            'calculator': 'gnome-calculator',
+    })
+
+
+    # Autostarts
+    #exec --no-startup-id blueman-applet
+    #exec_always --no-startup-id sbxkb
+    #exec --no-startup-id start_conky_maia
+    #exec --no-startup-id start_conky_green
+    autostart = set({
+        # These only fire up if we are in pure i3 mode (no other desktop environment+i3)
+        'session':  set(None, desktop=='i3' and desktop_tools=='xfce', 'exec --no-startup-id xfsettingsd --replace'),
+        'locker':   set(None, desktop=='i3', 'exec_always --no-startup-id xss-lock -- blurlock'),
+        #'locker':  set(None, desktop=='i3', 'exec_always --no-startup-id xss-lock -- i3lock --nofork --image ' + wallpaper_base + '/De/deepin.jpg'),
+        'polkit':   set(None, desktop=='i3', 'exec --no-startup-id /usr/lib/polkit-kde-authentication-agent-1'),
+        'screen':   set(None, desktop=='i3', 'exec --no-startup-id ~/.screenlayout/screen-laptop.sh'),
+        'powerman': set(None, desktop=='i3', 'exec_always --no-startup-id ' + apps.powermanager),
+
+        # If using polybar in pure i3
+        'bar': set(None, desktop=='i3' and polybar.enabled, 'exec_always --no-startup-id ~/.config/polybar/launch.sh --' + polybar.theme),
+
+        # Threse always fire up, regardless of how i3 is used
+        'wallpaper': 'exec_always --no-startup-id nitrogen --restore',
+        'compositor': 'exec_always --no-startup-id picom --config ~/.config/picom/picom.conf -b',
+        'keyboard': 'exec_always --no-startup-id xset r rate 250 50',
+
+        # Theme specific alttab
+        'alttab': 'exec_always --no-startup-id "alttab -w 1 -s 1 -bw 0 -fg \'' + themes[theme].color + '\' -bg \'#0E2229\' -frame \'' + themes[theme].color + '\' -t 128x150 -i 127x64"',
+    },
+        # If tasktray is enabled running in pure i3
+        tasktray.enabled and desktop=='i3', {
+            'matray':  set(None, os=='manjaro', 'exec --no-startup-id matray'),
+            'clipman': set('exec --no-startup-id clipit --daemon'),
+            'netman':  set('exec --no-startup-id nm-applet'),
+            'volume':  set('exec --no-startup-id volumeicon'),
         },
     )
-
-    # Tray Icons
-    tray = set({
-        'volume': 'volumeicon',
-        'network': 'nm-applet',
-    })
 
     # Volume Control
     volume = set({
         'up': 'amixer -D pulse sset Master 5%+',
         'down': 'amixer -D pulse sset Master 5%-',
         'mute': 'amixer -D pulse set Master 1+ toggle',
-        # Or self.terminal + '-e alsamixer'
-        'mixer': 'pavucontrol'
+        #'mixer': apps.terminal + ' -e alsamixer',
+        'mixer': 'pavucontrol',
     })
 
     # Media Control
@@ -412,6 +464,7 @@ def config():
         'up': 'brightnessctl -q set 3%+',
         'down': 'brightnessctl --min-val=2 -q set 3%-',
     })
+
 
     # Dynamically Load and Instantiate Plugins
     # Pluging must be LAST after all variables are set
@@ -429,10 +482,12 @@ def config():
 
 
 
-
 async def before_generate(config):
     """This hook fires before the new i3 config is generated"""
-    #dump('before hook')
+
+    # Kill some applications, as they don't re-autostart if already running
+    util.shell('killall alttab')
+
 
 
 async def after_generate(config):
@@ -451,7 +506,6 @@ async def after_generate(config):
     #config.plugins.archey3.set_archey()
 
     # Modify polybar theme files (template some variables)
-    # For https://github.com/adi1090x/polybar-themes system only
     #config.plugins.polybar.adjust_polybar()
 
     # Template the alacritty config
@@ -462,7 +516,7 @@ async def after_generate(config):
 ## Example Info Output
 
 All variables defined in your `~/.config/ohmyi3/config.py` will be available as
-nice `SuperDict` to the jinja2 templating engine and used to dynamically control
+a nice `SuperDict` to the jinja2 templating engine and used to dynamically control
 i3 (and anything else).
 
 
@@ -473,6 +527,7 @@ i3ctl info
 
 ```python
 :: Ohmyi3 User Configuration ::
+
 Dict({
     'host': 'p15',
     'user': 'mreschke',
@@ -496,12 +551,24 @@ Dict({
     'i3_gaps': True,
     'i3_restart': '~/.files/scripts/i3ctl-dev generate && i3-msg restart',
     'wallpaper_base': '~/Wallpaper',
-    'theme': 'pink',
+    'theme': 'amber',
     'themes': Dict({
-        'amber': Dict({'wallpaper': 'LinuxMint/linuxmint-una/nwatson_eclipse.jpg', 'archey3': 'yellow'}),
-        'archlinux': Dict({'archey3': 'blue', 'wallpaper': 'De/budgie.jpg'}),
-        'manjaro': Dict({'wallpaper': 'De/deepin.jpg', 'archey3': 'green'}),
-        'pink': Dict({'wallpaper': 'De/budgie.jpg', 'archey3': 'magenta'})
+        'amber': Dict({'color': '#EF5B1A', 'archey3': 'yellow'}),
+        'archlinux': Dict({
+            'color': '#1793D1',
+            'archey3': 'blue',
+            'wallpaper': 'De/budgie.jpg'
+        }),
+        'manjaro': Dict({
+            'color': '#106E5C',
+            'archey3': 'green',
+            'wallpaper': 'De/deepin.jpg'
+        }),
+        'pink': Dict({
+            'color': '#b41474',
+            'archey3': 'magenta',
+            'wallpaper': 'De/deepin.jpg'
+        })
     }),
     'polybar': Dict({
         'enabled': True,
@@ -514,11 +581,12 @@ Dict({
     }),
     'alacritty': Dict({'font_size': '8.0'}),
     'font': 'xft:URWGothic-Book 9',
+    'tasktray': Dict({'enabled': True, 'position': 'right'}),
     'bar': Dict({
         'enabled': False,
         'cmd': 'i3bar --transparency',
         'status_cmd': 'i3status',
-        'position': 'bottom',
+        'position': 'top',
         'font': 'xft:URWGothic-Book 8',
         'mode': 'dock',
         'hidden_state': 'hide',
@@ -526,28 +594,43 @@ Dict({
     }),
     'apps': Dict({
         'terminal': 'alacritty',
-        'filemanager': 'dolphin',
         'webbrowser': 'firefox',
         'webbrowser2': 'chromium',
-        'calculator': 'kcalc',
-        'settings': 'systemsettings',
-        'screenshot': 'spectacle',
         'dmenu': '/home/mreschke/.files/scripts/dmenu-run-blue',
+        'htop': 'htop',
+        'bashtop': 'bashtop',
+        'codeeditor': 'code',
         'screenlock': 'blurlock',
         'powermanager': 'xfce4-power-manager',
         'powermanagersettings': 'xfce4-power-manager-settings',
-        'xsslock': 'xss-lock -- blurlock',
-        'networkeditor': 'nm-connection-editor',
-        'htop': 'htop',
-        'bashtop': 'bashtop',
-        'taskmanager': 'ksysguard',
-        'codeeditor': 'code',
-        'notepad': 'kate',
-        'colorpicker': 'kcolorchooser',
         'spotify': 'spotify',
-        'clipboard': 'clipit --daemon'
+        'networkeditor': 'nm-connection-editor',
+        'filemanager': 'dolphin',
+        'calculator': 'kcalc',
+        'settings': 'systemsettings',
+        'taskmanager': 'ksysguard',
+        'screenshot': 'spectacle',
+        'colorpicker': 'kcolorchooser',
+        'notepad': 'kate'
     }),
-    'tray': Dict({'volume': 'volumeicon', 'network': 'nm-applet'}),
+    'autostart': Dict({
+        'session': None,
+        'locker': 'exec_always --no-startup-id xss-lock -- blurlock',
+        'polkit': 'exec --no-startup-id /usr/lib/polkit-kde-authentication-agent-1',
+        'screen': 'exec --no-startup-id ~/.screenlayout/screen-laptop.sh',
+        'powerman': 'exec_always --no-startup-id xfce4-power-manager',
+        'bar': 'exec_always --no-startup-id ~/.config/polybar/launch.sh --qpanels',
+        'wallpaper': 'exec_always --no-startup-id nitrogen --restore',
+        'compositor': 'exec_always --no-startup-id picom --config ~/.config/picom/picom.conf -b',
+        'keyboard': 'exec_always --no-startup-id xset r rate 250 50',
+        'alttab':
+            "exec_always --no-startup-id \"alttab -w 1 -s 1 -bw 0 -fg '#EF5B1A' -bg '#0E2229' -frame '#EF5B1A' -t 128x150 "
+            "-i 127x64\"",
+        'matray': 'exec --no-startup-id matray',
+        'clipman': 'exec --no-startup-id clipit --daemon',
+        'netman': 'exec --no-startup-id nm-applet',
+        'volume': 'exec --no-startup-id volumeicon'
+    }),
     'volume': Dict({
         'up': 'amixer -D pulse sset Master 5%+',
         'down': 'amixer -D pulse sset Master 5%-',
@@ -561,10 +644,10 @@ Dict({
     }),
     'brightness': Dict({'up': 'brightnessctl -q set 3%+', 'down': 'brightnessctl --min-val=2 -q set 3%-'}),
     'plugins': Dict({
-        'nitrogen': <plugins.nitrogen.nitrogen.Nitrogen object at 0x7fabd2bb7880>,
-        'archey3': <plugins.archey3.archey3.Archey3 object at 0x7fabd2bb78b0>,
-        'polybar': <plugins.polybar.polybar.Polybar object at 0x7fabd2bb7850>,
-        'alacritty': <plugins.alacritty.alacritty.Alacritty object at 0x7fabd2bb7940>
+        'nitrogen': <plugins.nitrogen.nitrogen.Nitrogen object at 0x7f1b2ed359f0>,
+        'archey3': <plugins.archey3.archey3.Archey3 object at 0x7f1b2ed35960>,
+        'polybar': <plugins.polybar.polybar.Polybar object at 0x7f1b2ed35ae0>,
+        'alacritty': <plugins.alacritty.alacritty.Alacritty object at 0x7f1b2ed35930>
     })
 })
 ```

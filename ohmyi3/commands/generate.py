@@ -55,7 +55,7 @@ async def cli():
         for file in files:
             uvicore.log.item2(f"Appending {file}")
             f.write(template(file, values=config))
-            f.write("\n\n\n")
+            f.write("\n\n\n\n\n")
 
         # Append the selected theme files
         theme_file = path([active_theme_path, 'theme.conf'])

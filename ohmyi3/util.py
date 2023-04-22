@@ -78,38 +78,92 @@ def gather(locals):
     return _variables
 
 
-class Overridable:
-    """Store all locals() for further set() overridable commands"""
+def set(default, *args):
+    """Return the default value plus deep merged overrides based on infinite conditions"""
+    # Convert infinite args into a list[tuple]
+    # Where each tuple in the list is a Boolean, and the value to use
+    #dd(args)
+    it = iter(args)
+    conditions = [*zip(it, it)]
 
-    def __init__(self, **kwargs):
-        self.kwargs = kwargs
+    # If the default is a dict, convert to Superdict
+    if type(default) == dict: default = Dict(default)
 
-    def __call__(self, default, **kwargs):
-        # If type of default is dict, convert to Superdict
-        if type(default) == dict: default = Dict(default)
+    # Loop all (condition,value) tuples
+    for condition in conditions:
 
-        # Loop each possible if_* override kwargs
-        for override_key, override_value in kwargs.items():
-            override_key = override_key[3:]
+        # Compare is either a boolean or a value to match the override Dict to
+        compare = condition[0]
 
-            # If type of override_value is dict, convert to Superdict
-            if type(override_value) == dict: override_value = Dict(override_value)
+        # Ger our override value from the tuple
+        override = condition[1]
 
-            # If the override_key is found in our Overridable values
-            if override_key in self.kwargs:
-                # Get the override_keys value
-                override_key_value = self.kwargs[override_key]
+        # If override is a dict, convert to Superdict
+        if type(override) == dict: override = Dict(override)
 
-                # Loop our the passed in override_value for matching override_key_value
-                for k, v in override_value.items():
-                    if k == override_key_value:
-                        if type(default) == Dict:
-                            for findkey, newvalue in v.items():
-                                #default.dotset(findkey, newvalue)
-                                default.dotset(findkey, newvalue)
-                                #v = default
-                                #dd(v)
-                            #return default
-                        else:
-                            default = v
-        return default
+        # Condition is a bool True or False
+        if type(compare) == bool:
+            # If conditoin is False, ignore this override
+            if condition[0] == False: continue
+
+            # Merge or overwrite the values
+            if type(default) == Dict and type(override) == Dict:
+                # Deep merge the override into the default
+                for k, v in override.items():
+                    default.dotset(k, v)
+            else:
+                default = override
+        else:
+            # Condition is a value, and the override is a Dict of overrides IF the value matches
+            for key, value in override.items():
+                if key == compare:
+                    if type(default) == Dict and type(override) == Dict:
+                        # Deep merge the override into the default
+                        for k, v in value.items():
+                            default.dotset(k, v)
+                    else:
+                        default = value
+
+    # Finally, return deep merged default with all matching overrides
+    return default
+
+
+
+
+
+
+# class Overridable:
+#     """Store all locals() for further set() overridable commands"""
+
+#     def __init__(self, **kwargs):
+#         self.kwargs = kwargs
+
+#     def __call__(self, default, **kwargs):
+#         # If type of default is dict, convert to Superdict
+#         if type(default) == dict: default = Dict(default)
+
+#         # Loop each possible if_* override kwargs
+#         for override_key, override_value in kwargs.items():
+#             override_key = override_key[3:]
+
+#             # If type of override_value is dict, convert to Superdict
+#             if type(override_value) == dict: override_value = Dict(override_value)
+
+#             # If the override_key is found in our Overridable values
+#             if override_key in self.kwargs:
+#                 # Get the override_keys value
+#                 override_key_value = self.kwargs[override_key]
+
+#                 # Loop our the passed in override_value for matching override_key_value
+#                 for k, v in override_value.items():
+#                     if k == override_key_value:
+#                         if type(default) == Dict:
+#                             for findkey, newvalue in v.items():
+#                                 #default.dotset(findkey, newvalue)
+#                                 default.dotset(findkey, newvalue)
+#                                 #v = default
+#                                 #dd(v)
+#                             #return default
+#                         else:
+#                             default = v
+#         return default
