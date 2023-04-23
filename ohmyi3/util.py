@@ -1,5 +1,6 @@
 import os
 import platform
+import subprocess
 from uvicore.typing import Dict
 from datetime import datetime
 from uvicore.support.module import load
@@ -43,7 +44,8 @@ def now(dateformat='%Y-%m-%d_%H-%M-%S'):
 
 def shell(cmd):
     """Execute a shell command"""
-    return os.system(cmd)
+    #return os.system(cmd)
+    return subprocess.run(cmd, shell=True, stdout=subprocess.PIPE).stdout.decode('utf-8').split()
 
 
 def template(file, *, base=None, output=None, values=None) -> str:
