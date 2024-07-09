@@ -7,13 +7,11 @@ from uvicore.typing import OrderedDict
 
 config = {
     'name': 'Ohmyi3 Configuration Manager',
-    'main': 'ohmyi3',
+    'main': {
+        'package': 'ohmyi3',
+        'provider': 'ohmyi3.package.provider.Ohmyi3'
+    },
     'debug': False,
-    'packages': OrderedDict({
-        'ohmyi3': {
-            'provider': 'ohmyi3.services.ohmyi3.Ohmyi3',
-        },
-    }),
     'logger': {
         'console': {
             'enabled': True,

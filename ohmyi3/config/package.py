@@ -46,7 +46,7 @@ config = {
         # Foundation is the core of uvicore and is required as the first dependency.
         # Foundation itself relys on configuration, logging, console, cache and more.
         'uvicore.foundation': {
-            'provider': 'uvicore.foundation.services.Foundation',
+            'provider': 'uvicore.foundation.package.provider.Foundation',
         },
     }),
 

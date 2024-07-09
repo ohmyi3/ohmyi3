@@ -2,11 +2,11 @@ import os
 import sys
 import uvicore
 from uvicore.console import group
-from ohmyi3.services import bootstrap
+from ohmyi3.package import bootstrap
 from uvicore.support.module import load
 
 # Bootstrap the Uvicore application from the console entrypoint
-app = bootstrap.application(is_console=True)
+app = bootstrap.Application(is_console=True)()
 
 # Define a new asyncclick group
 @group()

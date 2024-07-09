@@ -1,11 +1,11 @@
 import uvicore
-from uvicore.console.provider import Cli
-from uvicore.package import ServiceProvider
+from uvicore.console.package.registers import Cli
+from uvicore.package import Provider
 from uvicore.support.dumper import dump, dd
 
 
 @uvicore.provider()
-class Ohmyi3(ServiceProvider, Cli):
+class Ohmyi3(Provider, Cli):
 
     def register(self) -> None:
         """Register package into the uvicore framework.
@@ -36,13 +36,13 @@ class Ohmyi3(ServiceProvider, Cli):
         self.registers(self.package.config.registers)
 
         # Define CLI commands to be added to the ./uvicore command line interface
-        self.define_commands()
+        self.register_commands()
 
-    def define_commands(self) -> None:
-        """Define CLI commands to be added to the ./uvicore command line interface"""
+    def register_commands(self) -> None:
+        """Register CLI commands to be added to the ./uvicore command line interface"""
 
         # Or you can define commands as kwargs (multiple calls to self.commands() are appended)
-        self.commands(
+        self.register_cli_commands(
             group='i3ctl',
             help='Ohmyi3 i3ctl Commands and Setuptools Entrypoint',
             commands={
