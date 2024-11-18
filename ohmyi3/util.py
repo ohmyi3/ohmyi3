@@ -64,7 +64,13 @@ def template(file, *, base=None, output=None, values=None) -> str:
 
 
 def loggedinuser():
-    return os.getlogin();
+    try:
+        username = os.getlogin()
+    except:
+        uid = os.getuid()
+        import pwd
+        username = pwd.getpwuid(uid).pw_name
+    return username
 
 
 def hostname():
