@@ -21,9 +21,9 @@ and any other dynamic variable.
 
 ## Installation
 
-1. Install from Pypi https://pypi.org/project/ohmyi3/ with `pip`
+1. Install from Pypi https://pypi.org/project/ohmyi3/ using pipx
 ```
-pip install ohmyi3
+pipx install ohmyi3
 ```
 
 2. Initialize a fresh ohmyi3 config.  This creates a `~/.config/ohmyi3` and
