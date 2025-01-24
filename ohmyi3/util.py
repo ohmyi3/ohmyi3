@@ -80,8 +80,9 @@ def hostname():
 def gather(locals):
     """Gather variables that do not begin with _ or 'set' as a Superdict"""
     _variables = Dict()
+    ignore_keys = ['_', 'set', 'gather', 'Dict', 'path', 'plugin', 'dump', 'dd', 'env', 'util', 'uvicore']
     for key, value in locals.items():
-        if key[0] != '_' and key != 'set':
+        if key[0] not in ignore_keys and key not in ignore_keys:
             _variables[key] = value
     return _variables
 
